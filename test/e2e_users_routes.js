@@ -17,7 +17,7 @@ chai.use(chaiHttp);
 describe("e2e test : users API route", () => {
   // testing the user registration route
 
-  describe("POST /api/users", () => {
+  describe("POST-PUT /api/users", () => {
     it("should register a new user", (done) => {
       chai
         .request(server)
@@ -30,7 +30,6 @@ describe("e2e test : users API route", () => {
           },
         })
         .end((err, res) => {
-          console.log("body: " + res.body);
           res.should.have.status(200);
           res.body.should.be.a("object");
           res.body.user.should.have.property("username");
@@ -62,9 +61,28 @@ describe("e2e test : users API route", () => {
           done();
         });
     });
+
+    //Nicole's tests
+    it ("It should update an existing user", (done) => {
+      chai
+        .request(server)
+        .put("/api/user" + User.id)
+        .send({
+          user: {
+            username: "abc",
+            email: "luck_j@gmail.com",
+            password: "luck123",
+          },
+        })
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body.user.should.have.property('username').eql('abc');
+          done();
+        });
+    });
   });
 
-  //Nicole's tests 
   describe ("GET /api/users", () => {
     it("It should get a user by id", (done) => {
       chai
@@ -86,6 +104,35 @@ describe("e2e test : users API route", () => {
         throw err;
       });
       done();
+    });
+  });
+});
+
+describe("e2e test : profiles API route", () => {
+  //Testing the profile route
+  describe("GET /api/profiles", () => {
+    it("It should get a user profile", () => {
+      chai
+      .request(server)
+      .get('/api/profiles?username=nicole')
+      .send({
+        profile: {
+          username: "nicole",
+          bio: "Hi...",
+          image: 'https://static.productionready.io/images/smiley-cyrus.jpg',
+          following: false
+        },
+      })
+      .end((err, res) => {
+        res.should.have.status(200);
+          res.body.should.be.a("object");
+          res.body.should.have.property("profile");
+          res.body.profile.should.have.property("username");
+          res.body.profile.should.have.property("bio");
+          res.body.profile.should.have.property("image");
+          res.body.profile.should.have.property("following");
+          done();
+      });
     });
   });
 });
