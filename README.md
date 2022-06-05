@@ -55,4 +55,6 @@ In line 66 test/e2e_users_routes.js a test to update an user is conducted. Howev
 
 In line 86 in test/e2e_users_routes.js a test to get an user by ID is conducted. As the response is a Promise, chai.then.expect() is used. The test passes. However, there's an 'Error: Not found' as the user is never returned, it is listed as user undefined meaning it gets the Promise but not the sent user.
 
+In line 111 in test/e2e_users_routes.js a test to get a profile is conducted. The test should check if an user profile given an username in the route is being returned. However, it does not return anything, an Error: 404 is returned instead.
+
 [![Brought to you by Thinkster](https://raw.githubusercontent.com/gothinkster/realworld/master/media/end.png)](https://thinkster.io)
