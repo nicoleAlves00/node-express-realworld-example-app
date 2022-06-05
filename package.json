@@ -7,8 +7,8 @@
     "mongo:start": "docker run --name realworld-mongo -p 27017:27017 mongo & sleep 5",
     "start": "node ./app.js",
     "dev": "nodemon ./app.js",
-    "test": "mocha --require test/hooks.js test/e2e_users_routes_test.js",
-    "test-html" : "mocha --timeout 5000 --require test/hooks.js test/e2e_users_routes_test.js --reporter mochawesome",
+    "test": "mocha --require test/hooks.js test/e2e_users_routes.js",
+    "test-html" : "mocha --timeout 5000 --require test/hooks.js test/e2e_users_routes.js --reporter mochawesome",
     "stop": "lsof -ti :3000 | xargs kill",
     "mongo:stop": "docker stop realworld-mongo && docker rm realworld-mongo"
   },

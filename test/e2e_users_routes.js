@@ -2,6 +2,7 @@
 
 const chai = require("chai");
 const should = chai.should();
+const expect = chai.expect();
 const chaiHttp = require("chai-http");
 
 // importing our server
@@ -11,7 +12,6 @@ var router = require("../routes/index");
 const User = require("../models/User.js");
 // use chaiHttp for making the actual HTTP requests
 chai.use(chaiHttp);
-var key;
 
 
 describe("e2e test : users API route", () => {
@@ -30,6 +30,7 @@ describe("e2e test : users API route", () => {
           },
         })
         .end((err, res) => {
+          console.log("body: " + res.body);
           res.should.have.status(200);
           res.body.should.be.a("object");
           res.body.user.should.have.property("username");
@@ -60,6 +61,31 @@ describe("e2e test : users API route", () => {
           res.body.errors.should.have.property("email").eq("is already taken.");
           done();
         });
+    });
+  });
+
+  //Nicole's tests 
+  describe ("GET /api/users", () => {
+    it("It should get a user by id", (done) => {
+      chai
+      .request(server)
+      .get('/api/users' + User.id)
+      .send({
+        user: {
+          username: "nicole",
+          email: "nic@gmail.com",
+          password: "abc123",
+        },
+      })
+      .then(function (res) {
+        expect(res).to.have.status(200);
+        expect(res).to.be.a('object');
+        expect(res.body).to.have.property('token').equal(User.id);
+      })
+      .catch(function (err) {
+        throw err;
+      });
+      done();
     });
   });
 });

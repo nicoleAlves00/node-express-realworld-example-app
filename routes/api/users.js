@@ -4,17 +4,24 @@ var passport = require('passport');
 var User = mongoose.model('User');
 var auth = require('../auth');
 
-router.get('/user', auth.required, function(req, res, next){
+router.get('/user', auth.optional, function(req, res, next){
   User.findById(req.payload.id).then(function(user){
     if(!user){ return res.sendStatus(401); }
-   
+
     return res.json({user: user.toAuthJSON()});
   }, err => {
     next(err);
   });
+  /* User.find().then(function(user){
+    if(!user){ return res.sendStatus(401); }
+    
+    return res.json({user: user.toAuthJSON()});
+  }, err => {
+    next(err);
+  }); */
 });
 
-router.put('/user', auth.required, function(req, res, next){
+router.put('/user', auth.optional, function(req, res, next){
   User.findById(req.payload.id).then(function(user){
     if(!user){ return res.sendStatus(401); }
 
